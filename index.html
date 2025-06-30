@@ -5,7 +5,7 @@
     <title>Tahiliani's Hub</title>
 
     <!-- Meta viewport for mobile -->
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- Font and Styles -->
     <style>
@@ -24,14 +24,22 @@
             touch-action: none;
         }
 
-        #unity-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
+        #unity-container {
             width: 100vw;
             height: 100vh;
-            background: #000;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
+
+        #unity-canvas {
+            aspect-ratio: 9 / 16;
+            max-width: 100%;
+            max-height: 100%;
+            background: black;
+        }
+
 
         #loader {
             position: fixed;
@@ -128,7 +136,11 @@
     </div>
 
     <!-- Canvas -->
-    <canvas id="unity-canvas" width="1080" height="1920" tabindex="-1"></canvas>
+    <div id="unity-container">
+        <canvas id="unity-canvas" width="1080" height="1920" tabindex="-1"></canvas>
+    </div>
+
+    <!--<canvas id="unity-canvas" width="1080" height="1920" tabindex="-1"></canvas>-->
 
     <!-- Unity Loader Script -->
     <script src="Build/Mobile.loader.js"></script>
