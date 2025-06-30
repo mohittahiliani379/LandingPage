@@ -27,7 +27,7 @@
             top: 0;
             left: 0;
             width: 100vw;
-            height: 100dvh; /* Use dynamic viewport height on supported browsers */
+            height: var(--app-height);
             background: #000;
             display: block;
         }
@@ -37,7 +37,7 @@
             top: 0;
             left: 0;
             width: 100vw;
-            height: 100dvh;
+            height: var(--app-height);
             background: #000;
             color: gainsboro;
             display: flex;
@@ -100,7 +100,7 @@
             top: 0;
             left: 0;
             width: 100vw;
-            height: 100dvh;
+            height: var(--app-height);
             background: #000;
             color: #fff;
             justify-content: center;
@@ -127,34 +127,30 @@
 
     <script src="Build/Mobile.loader.js"></script>
     <script>
-        // Show warning in landscape mode
-        function checkOrientation() {
-            const warning = document.getElementById('rotate-warning');
-            if (window.innerWidth > window.innerHeight) {
-                warning.style.display = 'flex';
-            } else {
-                warning.style.display = 'none';
-            }
+        // Set custom CSS height variable
+        function setAppHeight() {
+            const appHeight = window.innerHeight;
+            document.documentElement.style.setProperty('--app-height', `${appHeight}px`);
         }
 
-        // Fallback for older mobile browsers that don’t support 100dvh
-        function resizeCanvasFallback() {
-            const canvas = document.getElementById("unity-canvas");
-            canvas.style.height = window.innerHeight + "px";
+        // Handle orientation change
+        function checkOrientation() {
+            const warning = document.getElementById('rotate-warning');
+            warning.style.display = (window.innerWidth > window.innerHeight) ? 'flex' : 'none';
         }
 
         window.addEventListener("resize", () => {
+            setAppHeight();
             checkOrientation();
-            resizeCanvasFallback();
         });
 
         window.addEventListener("orientationchange", () => {
+            setAppHeight();
             checkOrientation();
-            resizeCanvasFallback();
         });
 
+        setAppHeight();
         checkOrientation();
-        resizeCanvasFallback();
 
         // Load Unity
         createUnityInstance(document.querySelector("#unity-canvas"), {
