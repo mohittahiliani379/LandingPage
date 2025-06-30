@@ -5,7 +5,7 @@
     <title>Tahiliani's Hub</title>
 
     <!-- Meta viewport for mobile -->
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes">
 
     <!-- Font and Styles -->
     <style>
@@ -34,10 +34,10 @@
         }
 
         #unity-canvas {
-            aspect-ratio: 9 / 16;
-            max-width: 100%;
-            max-height: 100%;
-            background: black;
+            width: 100vw;
+            height: 100vh;
+            display: block;
+            background: #000;
         }
 
 
@@ -137,7 +137,7 @@
 
     <!-- Canvas -->
     <div id="unity-container">
-        <canvas id="unity-canvas" width="1080" height="1920" tabindex="-1"></canvas>
+        <canvas id="unity-canvas" tabindex="-1"></canvas>
     </div>
 
     <!--<canvas id="unity-canvas" width="1080" height="1920" tabindex="-1"></canvas>-->
