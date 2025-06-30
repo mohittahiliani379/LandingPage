@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8" />
     <title>Tahiliani's Hub</title>
-
-    <!-- Meta viewport for mobile -->
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes">
 
-    <!-- Font and Styles -->
     <style>
         @font-face {
             font-family: "Etna";
@@ -17,36 +14,30 @@
         html, body {
             margin: 0;
             padding: 0;
+            width: 100%;
             height: 100%;
-            overflow: hidden;
             background: #000;
             font-family: "Etna", sans-serif;
+            overflow: hidden;
             touch-action: none;
         }
 
-        #unity-container {
-            width: 100vw;
-            height: 90vh;
-            background: black;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
         #unity-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100vw;
-            height: 100vh;
-            display: block;
+            height: 100dvh; /* Use dynamic viewport height on supported browsers */
             background: #000;
+            display: block;
         }
-
 
         #loader {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
-            height: 100vh;
+            height: 100dvh;
             background: #000;
             color: gainsboro;
             display: flex;
@@ -103,60 +94,69 @@
             }
         }
 
-        /* Orientation warning */
         #rotate-warning {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
-            height: 100vh;
+            height: 100dvh;
             background: #000;
             color: #fff;
             justify-content: center;
             align-items: center;
             z-index: 10000;
             text-align: center;
-            font-family: sans-serif;
             padding: 20px;
+            box-sizing: border-box;
         }
     </style>
 </head>
 
 <body>
-    <!-- Orientation Warning -->
     <div id="rotate-warning">
         <p>Please rotate your device to <strong>portrait</strong> mode</p>
     </div>
 
-    <!-- Loader -->
     <div id="loader">
         <h2>Hey, you are heading to the best landing page ever, and the best things take time</h2>
         <div class="dot-loader"><span>.</span><span>.</span><span>.</span></div>
     </div>
 
-    <!-- Canvas -->
-    <div id="unity-container">
-        <canvas id="unity-canvas" tabindex="-1"></canvas>
-    </div>
+    <canvas id="unity-canvas" tabindex="-1"></canvas>
 
-    <!--<canvas id="unity-canvas" width="1080" height="1920" tabindex="-1"></canvas>-->
-
-    <!-- Unity Loader Script -->
     <script src="Build/Mobile.loader.js"></script>
     <script>
+        // Show warning in landscape mode
         function checkOrientation() {
             const warning = document.getElementById('rotate-warning');
             if (window.innerWidth > window.innerHeight) {
-                warning.style.display = 'flex'; // Landscape
+                warning.style.display = 'flex';
             } else {
-                warning.style.display = 'none'; // Portrait
+                warning.style.display = 'none';
             }
         }
-        window.addEventListener("resize", checkOrientation);
-        window.addEventListener("orientationchange", checkOrientation);
-        checkOrientation();
 
+        // Fallback for older mobile browsers that don’t support 100dvh
+        function resizeCanvasFallback() {
+            const canvas = document.getElementById("unity-canvas");
+            canvas.style.height = window.innerHeight + "px";
+        }
+
+        window.addEventListener("resize", () => {
+            checkOrientation();
+            resizeCanvasFallback();
+        });
+
+        window.addEventListener("orientationchange", () => {
+            checkOrientation();
+            resizeCanvasFallback();
+        });
+
+        checkOrientation();
+        resizeCanvasFallback();
+
+        // Load Unity
         createUnityInstance(document.querySelector("#unity-canvas"), {
             dataUrl: "Build/Mobile.data.unityweb",
             frameworkUrl: "Build/Mobile.framework.js.unityweb",
@@ -164,8 +164,7 @@
             streamingAssetsUrl: "StreamingAssets",
             companyName: "DefaultCompany",
             productName: "Landing page",
-            productVersion: "0.1.0",
-            /*matchWebGLToCanvasSize: true*/
+            productVersion: "0.1.0"
         }).then(() => {
             document.getElementById("loader").style.display = "none";
         }).catch((message) => {
