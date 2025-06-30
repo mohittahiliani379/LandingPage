@@ -4,31 +4,40 @@
     <meta charset="utf-8" />
     <title>Tahiliani's Hub</title>
 
+    <!-- Meta viewport for mobile -->
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes">
+
+    <!-- Font and Styles -->
     <style>
         @font-face {
             font-family: "Etna";
             src: url("TemplateData/etna-free-font.otf") format("opentype");
         }
 
-        body {
+        html, body {
             margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
             background: #000;
             font-family: "Etna", sans-serif;
-            text-align: center;
+            touch-action: none;
         }
 
-        /*#unity-canvas {
-            width: 100%;
-            height: 100%;
-            background: #232325;
-            position: relative;*/
+        #unity-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
         }
 
         #loader {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
+            width: 100vw;
             height: 100vh;
             background: #000;
             color: gainsboro;
@@ -85,36 +94,56 @@
                 transform: scale(1);
             }
         }
+
+        /* Orientation warning */
+        #rotate-warning {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            color: #fff;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            text-align: center;
+            font-family: sans-serif;
+            padding: 20px;
+        }
     </style>
 </head>
 
 <body>
-    <!-- Custom Loader -->
+    <!-- Orientation Warning -->
+    <div id="rotate-warning">
+        <p>Please rotate your device to <strong>portrait</strong> mode</p>
+    </div>
+
+    <!-- Loader -->
     <div id="loader">
         <h2>Hey, you are heading to the best landing page ever, and the best things take time</h2>
         <div class="dot-loader"><span>.</span><span>.</span><span>.</span></div>
     </div>
 
-    <!-- Game Canvas -->
-    <canvas id="unity-canvas" width="1080" height="1920" tabindex="-1" style="width: 1080px; height: 1920px;"></canvas>
+    <!-- Canvas -->
+    <canvas id="unity-canvas" width="1080" height="1920" tabindex="-1"></canvas>
 
-    <!-- Unity Loader -->
+    <!-- Unity Loader Script -->
     <script src="Build/Mobile.loader.js"></script>
     <script>
-        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-            const meta = document.createElement('meta');
-            meta.name = 'viewport';
-            meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-            document.head.appendChild(meta);
-
-            const canvas = document.querySelector("#unity-canvas");
-            canvas.style.width = "100%";
-            canvas.style.height = "100%";
-            canvas.style.position = "fixed";
-
-            document.body.style.textAlign = "left";
-           
+        function checkOrientation() {
+            const warning = document.getElementById('rotate-warning');
+            if (window.innerWidth > window.innerHeight) {
+                warning.style.display = 'flex'; // Landscape
+            } else {
+                warning.style.display = 'none'; // Portrait
+            }
         }
+        window.addEventListener("resize", checkOrientation);
+        window.addEventListener("orientationchange", checkOrientation);
+        checkOrientation();
 
         createUnityInstance(document.querySelector("#unity-canvas"), {
             dataUrl: "Build/Mobile.data.unityweb",
