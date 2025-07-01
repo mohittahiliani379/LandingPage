@@ -56,26 +56,12 @@
                 font-variant: small-caps;
             }
 
-        .dot-loader {
-            display: flex;
-            gap: 6px;
+        #progress-text {
             margin-top: 20px;
-            font-size: 2.5rem;
-            font-weight: bold;
+            font-size: 2rem;
             color: #00bfff;
+            font-weight: bold;
         }
-
-            .dot-loader span {
-                animation: blink 1.4s infinite;
-            }
-
-                .dot-loader span:nth-child(2) {
-                    animation-delay: 0.2s;
-                }
-
-                .dot-loader span:nth-child(3) {
-                    animation-delay: 0.4s;
-                }
 
         @keyframes blink {
             0% {
@@ -120,7 +106,7 @@
 
     <div id="loader">
         <h2>Hey, you are heading to the best landing page ever, and the best things take time</h2>
-        <div class="dot-loader"><span>.</span><span>.</span><span>.</span></div>
+        <div id="progress-text">Loading: 0%</div>
     </div>
 
     <canvas id="unity-canvas" tabindex="-1"></canvas>
@@ -133,12 +119,13 @@
             document.documentElement.style.setProperty('--app-height', `${appHeight}px`);
         }
 
-        // Handle orientation change
+        // Orientation handling
         function checkOrientation() {
             const warning = document.getElementById('rotate-warning');
             warning.style.display = (window.innerWidth > window.innerHeight) ? 'flex' : 'none';
         }
 
+        // Event listeners
         window.addEventListener("resize", () => {
             setAppHeight();
             checkOrientation();
@@ -149,10 +136,11 @@
             checkOrientation();
         });
 
+        // Initial setup
         setAppHeight();
         checkOrientation();
 
-        // Load Unity
+        // Load Unity instance
         createUnityInstance(document.querySelector("#unity-canvas"), {
             dataUrl: "Build/Mobile.data.unityweb",
             frameworkUrl: "Build/Mobile.framework.js.unityweb",
@@ -161,6 +149,8 @@
             companyName: "DefaultCompany",
             productName: "Landing page",
             productVersion: "0.1.0"
+        }, (progress) => {
+            document.getElementById("progress-text").innerText = `Loading: ${Math.round(progress * 100)}%`;
         }).then(() => {
             document.getElementById("loader").style.display = "none";
         }).catch((message) => {
