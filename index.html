@@ -107,9 +107,38 @@
     </div>
 
     <div id="loader">
-        <h2>Hey, you are heading to the best landing page ever, and the best things take time</h2>
+        <h2 id="funny-line"></h2>
         <div id="progress-text">Loading: 0%</div>
     </div>
+
+    <script>
+        const funnyLines = [
+            "Loading faster than your ex moved on 💀",
+            "Almost there... like your crush in your DMs (never).",
+            "Unpacking vibes... please wait ✨📦",
+            "Downloading motivation... 404 not found.",
+            "Loading... because teleportation isn’t real yet.",
+            "Hold on, the hamster running the server needs a Red Bull.",
+            "Our devs said it would be fast. They lied.",
+            "Fetching your awesomeness... might take a while.",
+            "Loading like a Netflix show on 2G.",
+            "Be patient. Rome wasn't rendered in a frame.",
+            "If this takes longer than your relationship, we’re sorry.",
+            "Calculating pi... just kidding, loading game.",
+            "Rendering pixels like it's Minecraft in 2009.",
+            "Bringing the heat... after this long-ass load.",
+            "Still faster than Indian matchmaking.",
+            "Please wait... even your future is buffering.",
+            "Installing chaos.exe",
+            "Breathe in... breathe out... we’re almost done.",
+            "Loading so slow even grandma could beat it in ludo.",
+            "Plotting a world takeover, disguised as a loading screen."
+        ];
+
+
+        document.getElementById("funny-line").innerText = funnyLines[Math.floor(Math.random() * funnyLines.length)];
+    </script>
+
 
     <canvas id="unity-canvas" tabindex="-1"></canvas>
 
@@ -153,6 +182,14 @@
             productVersion: "0.1.0"
         }, (progress) => {
             document.getElementById("progress-text").innerText = `Loading: ${Math.round(progress * 100)}%`;
+
+            // Show a new funny line every 20% of progress
+            if (!window.lastFunnyStep) window.lastFunnyStep = 0;
+
+            if (progress - window.lastFunnyStep >= 0.2 || progress === 1) {
+                window.lastFunnyStep = progress;
+                document.getElementById("funny-line").innerText = funnyLines[Math.floor(Math.random() * funnyLines.length)];
+            }
         }).then(() => {
             document.getElementById("loader").style.display = "none";
         }).catch((message) => {
