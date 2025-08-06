@@ -102,9 +102,9 @@
 </head>
 
 <body>
-    <!--<div id="rotate-warning">
+    <div id="rotate-warning">
         <p>Please rotate your device to <strong>portrait</strong> mode</p>
-    </div>-->
+    </div>
 
     <div id="loader">
         <h2 id="funny-line"></h2>
@@ -151,25 +151,25 @@
         }
 
         // Orientation handling
-        //function checkOrientation() {
-        //    const warning = document.getElementById('rotate-warning');
-        //    warning.style.display = (window.innerWidth > window.innerHeight) ? 'flex' : 'none';
-        //}
+        function checkOrientation() {
+            const warning = document.getElementById('rotate-warning');
+            warning.style.display = (window.innerWidth > window.innerHeight) ? 'flex' : 'none';
+        }
 
         // Event listeners
         window.addEventListener("resize", () => {
             setAppHeight();
-            /*checkOrientation();*/
+            checkOrientation();
         });
 
         window.addEventListener("orientationchange", () => {
             setAppHeight();
-            /*checkOrientation();*/
+            checkOrientation();
         });
 
         // Initial setup
         setAppHeight();
-        /*checkOrientation();*/
+        checkOrientation();
 
         // Load Unity instance
         createUnityInstance(document.querySelector("#unity-canvas"), {
